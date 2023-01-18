@@ -1,28 +1,37 @@
-import { View, Text, Image } from "react-native";
-import React, { useState } from "react";
+import { View, Text, Image, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
 import ImageOption from "./src/components/ImageOption";
+import Button from "./src/components/Button";
 
 import icon from "./assets/icon.png";
 import styles from "./App.styles";
-import question from "./assets/data/oneQuestionWithOption";
+import questions from "./assets/data/imageMulatipleChoiceQuestions";
+import ImageMultipleChoiceQuestion from "./src/components/ImageMultipleChoiceQuestion";
 
 const App = () => {
-  const [selected, setSelected] = useState(null);
+  const [curQuestionIdx, setcurQuestionIdx] = useState(0);
+
+  useEffect(() => {
+    if (curQuestionIdx >= questions.length - 1) {
+      setcurQuestionIdx(0);
+    }
+  }, [curQuestionIdx]);
+
+  const onCorrect = () => {
+    setcurQuestionIdx((prev) => prev + 1);
+  };
+
+  const onWrong = () => {
+    Alert.alert("Wrong answer");
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{question.question}</Text>
-      <View style={styles.optionsContainer}>
-        {question.options.map((option) => (
-          <ImageOption
-            key={option.id}
-            image={option.image}
-            text={option.text}
-            isSelected={selected?.id === option.id}
-            onPress={() => setSelected(option)}
-          />
-        ))}
-      </View>
+      <ImageMultipleChoiceQuestion
+        question={questions[curQuestionIdx]}
+        onCorrect={onCorrect}
+        onWrong={onCorrect}
+      />
     </View>
   );
 };
