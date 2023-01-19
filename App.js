@@ -1,12 +1,11 @@
-import { View, Text, Image, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
-import ImageOption from "./src/components/ImageOption";
-import Button from "./src/components/Button";
 import ImageMultipleChoiceQuestion from "./src/components/ImageMultipleChoiceQuestion";
 import OpenEndedQuestion from "./src/components/OpenEndedQuestion";
 
 import styles from "./App.styles";
 import questions from "./assets/data/allQuestions";
+import Header from "./src/components/Header";
 
 const App = () => {
   const [curQuestionIdx, setcurQuestionIdx] = useState(1);
@@ -27,6 +26,8 @@ const App = () => {
 
   return (
     <View style={styles.container}>
+      <Header progress={curQuestionIdx / questions.length} />
+
       {questions[curQuestionIdx].type === "IMAGE_MULTIPLE_CHOICE" && (
         <ImageMultipleChoiceQuestion
           question={questions[curQuestionIdx]}
